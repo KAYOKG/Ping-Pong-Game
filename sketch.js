@@ -3,8 +3,8 @@ let xBall = 250
 let yBall = 280
 let diameter = 20
 let radius = diameter/2
-var xBallspeed = 6
-var yBallspeed = 6
+var xBallspeed = 12
+var yBallspeed = 12
 
 //CODIGUIN DA PLATAFORMA
 let xPlatform = 212.5
@@ -18,10 +18,15 @@ let xOpponentplatform = 212.5
 let yOpponentplatform = 3
 let opponentplatformspeed 
 
+//verificação da colisão
 let collision = false
 
+//pontinhos
 let myscores = 0
 let opponentscores = 0
+
+//Para o computador da uma chance pra gente
+let errorchance = 0
 
 function setup(){
   createCanvas(500, 600)
@@ -35,6 +40,8 @@ function draw() {
   platform_movement()
   show_opponent_platform()
   opponent_platform_move()
+  calculation_of_chance_of_error()
+  //multiplayer_opponent_movement()
   //collision_check()
   //opponent_collision_check()
   collision_checklibrarie()
@@ -63,10 +70,10 @@ function show_the_platform(){
   rect(xPlatform, yPlatform, platformwidth, platformheight, platformcorner)
 }
 function platform_movement(){
-  if (keyIsDown(LEFT_ARROW) && xPlatform > 0){
+  if (keyIsDown(LEFT_ARROW) && xPlatform > 3){
     xPlatform -= 10 
   }
-  if (keyIsDown(RIGHT_ARROW) && xPlatform < 425){
+  if (keyIsDown(RIGHT_ARROW) && xPlatform < 422){
     xPlatform += 10
   }
 }
@@ -76,12 +83,34 @@ function show_opponent_platform(){
 }
 function opponent_platform_move(){
   opponentplatformspeed = xBall - xOpponentplatform - platformheight/2 - 72
-  xOpponentplatform += opponentplatformspeed
+  xOpponentplatform += opponentplatformspeed + errorchance
+  calculation_of_chance_of_error()
   if(xOpponentplatform < 0){
     xOpponentplatform = 0
   }
   if(xOpponentplatform > 425){
     xOpponentplatform = 425
+  }
+}
+function calculation_of_chance_of_error(){
+  if (opponentscores >= myscores) {
+    errorchance += 1
+    if (errorchance >= 7){
+      errorchance = 85
+    }
+  } else {
+    errorchance -= 1
+    if (errorchance <= 3){
+      errorchance = 84
+    }
+  }
+}
+function multiplayer_opponent_movement(){
+  if (keyIsDown(65) && xOpponentplatform > 3){
+    xOpponentplatform -= 10 
+  }
+  if (keyIsDown(68) && xOpponentplatform < 422){
+    xOpponentplatform += 10
   }
 }
 /*function collision_check(){
