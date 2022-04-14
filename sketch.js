@@ -28,8 +28,19 @@ let opponentscores = 0
 //Para o computador da uma chance pra gente
 let errorchance = 0
 
+//musiquinha
+let soundTrack
+let scores
+let platformSound
+
+function preload(){
+  soundTrack = loadSound('sons/soundtrack.mp3')
+  scores = loadSound('sons/scores.mp3')
+  platformSound = loadSound('sons/platformsound.mp3')
+}
 function setup(){
   createCanvas(500, 600)
+  soundTrack.loop()
 }
 function draw() {
   background(35)
@@ -133,12 +144,14 @@ function collision_checklibrarie(){
   collision = collideRectCircle(xPlatform, yPlatform, platformwidth, platformheight, xBall, yBall, radius)
   if(collision){
     yBallspeed *= -1
+    platformSound.play()
   }
 }
 function opponent_collision_checklibrarie(){ 
   collision = collideRectCircle(xOpponentplatform, yOpponentplatform, platformwidth, platformheight, xBall, yBall, radius)
   if(collision){
     yBallspeed *= -1
+    platformSound.play()
   }
 }
 function score(){
@@ -152,8 +165,10 @@ function score(){
 function scoring(){
   if (yBall > 590){
     opponentscores += 1
+    scores.play()
   }
   if ( yBall < 12){
     myscores += 1
+    scores.play()
   }
 }
